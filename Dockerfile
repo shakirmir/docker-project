@@ -1,26 +1,11 @@
-# Base Image
 FROM centos:7
 
-# Maintainer Information
-LABEL maintainer="shakirmir@gmail.com"
+RUN yum install -y httpd unzip
 
-# Install Apache, zip and unzip
-RUN yum install -y httpd zip unzip && \
-    yum clean all
+COPY kindle.zip /tmp/
 
-# Download website template
-ADD https://www.free-css.com/assets/files/free-css-templates/download/page247/kindle.zip /var/www/html/
+RUN unzip /tmp/kindle.zip -d /var/www/html/
 
-# Set working directory
-WORKDIR /var/www/html
-
-# Extract and copy website files
-RUN unzip kindle.zip && \
-    cp -rvf markups-kindle/* . && \
-    rm -rf markups-kindle kindle.zip _MACOSX
-
-# Expose HTTP port
 EXPOSE 80
 
-# Start Apache in foreground
-CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
+CMD ["/usr/sbin/httpd","-D","FOREGROUND"]
