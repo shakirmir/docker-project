@@ -1,17 +1,15 @@
-FROM centos:7
+FROM amazonlinux:2023
 
-LABEL maintainer="shakirmir@gmail.com"
-
-RUN yum install -y httpd zip unzip wget && \
-    yum clean all
+RUN dnf install -y httpd zip unzip wget && \
+    dnf clean all
 
 WORKDIR /tmp
 
 RUN wget -O template.zip \
-    https://www.free-css.com/assets/files/free-css-templates/download/page296/finexo.zip && \
+    https://www.free-css.com/assets/files/free-css-templates/download/page247/kindle.zip && \
     unzip template.zip && \
-    cp -rvf finexo-html/* /var/www/html/ && \
-    rm -rf template.zip finexo-html
+    cp -rvf markups-kindle/* /var/www/html/ && \
+    rm -rf markups-kindle template.zip
 
 EXPOSE 80
 
