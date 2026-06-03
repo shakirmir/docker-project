@@ -1,25 +1,18 @@
-# Base Image
 FROM centos:7
 
-# Maintainer Information
-LABEL maintainer="sanjay.dahiya3320@gmail.com"
+LABEL maintainer="shakirmir@gmail.com"
 
-# Install Apache, zip and unzip
-RUN yum install -y httpd zip unzip && \
+RUN yum install -y httpd zip unzip wget && \
     yum clean all
 
-# Download WordPress Plugin ZIP
-ADD https://downloads.wordpress.org/plugin/zip-from-media.latest-stable.zip /var/www/html/
+WORKDIR /tmp
 
-# Set working directory
-WORKDIR /var/www/html
+RUN wget -O template.zip \
+    https://www.free-css.com/assets/files/free-css-templates/download/page296/finexo.zip && \
+    unzip template.zip && \
+    cp -rvf finexo-html/* /var/www/html/ && \
+    rm -rf template.zip finexo-html
 
-# Extract ZIP
-RUN unzip zip-from-media.latest-stable.zip && \
-    rm -f zip-from-media.latest-stable.zip
-
-# Expose HTTP port
 EXPOSE 80
 
-# Start Apache in foreground
 CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
